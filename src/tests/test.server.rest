@@ -1,0 +1,7 @@
+### POST /api/shorten
+POST http://localhost:5000/api/shorten
+Content-Type: application/json
+
+{
+  "url": "https://example.com/some/long/url"
+}
