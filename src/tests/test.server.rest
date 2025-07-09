@@ -5,3 +5,7 @@ Content-Type: application/json
 {
   "url": "https://example.com/some/long/url"
 }
+
+
+### Error: POST /api/shorten
+POST http://localhost:5000/api/shorten
