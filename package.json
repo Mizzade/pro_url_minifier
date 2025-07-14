@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun --hot ./src/server.ts",
+    "dev": "bun --hot ./backend/src/server.ts",
     "prettier:check": "prettier --check ./src",
     "prettier:fix": "prettier --write ./src"
   },
