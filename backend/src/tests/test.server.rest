@@ -3,7 +3,7 @@ POST http://localhost:5000/api/shorten
 Content-Type: application/json
 
 {
-  "url": "https://example.com/some/long/url"
+  "url": " https://www.google.com"
 }
 
 ### Error: POST /api/shorten/
@@ -18,3 +18,15 @@ Content-Type: application/json
 ### Error: POST /api/shorten
 ### Missing URL in request body.
 POST http://localhost:5000/api/shorten
+
+
+### GET /api/shorten/:shortUrl
+GET http://localhost:5000/api/shorten/xIEvD_4lge
+
+### GET /api/shorten/:shortUrl/invalidUrl
+### Error: 404 Not Found
+GET http://localhost:5000/api/shorten/invalidUrl
+
+### Error: GET /api/shorten/:shortUrl
+### 404 Not Found
+GET http://localhost:5000/api/shorten

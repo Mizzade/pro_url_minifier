@@ -14,3 +14,10 @@ export const findByUrl = async (original: string) =>
       original,
     },
   });
+
+export const findByShortUrl = async (shortened: string) =>
+  prisma.url.findUnique({
+    where: {
+      shortened,
+    },
+  });
