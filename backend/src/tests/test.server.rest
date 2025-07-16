@@ -6,6 +6,15 @@ Content-Type: application/json
   "url": "https://example.com/some/long/url"
 }
 
+### Error: POST /api/shorten/
+### Invalid URL.
+POST http://localhost:5000/api/shorten
+Content-Type: application/json
+
+{
+  "url": "invalid-url"
+}
 
 ### Error: POST /api/shorten
+### Missing URL in request body.
 POST http://localhost:5000/api/shorten
