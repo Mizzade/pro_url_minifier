@@ -1,7 +1,7 @@
 import express from "express";
 import type { NextFunction, Request, Response } from "express";
 import { nanoid } from "nanoid";
-import * as User from "./models/urls";
+import * as Url from "./models/urls";
 import validUrl from "valid-url";
 
 const nanoidAsync = async (length: number): Promise<string> =>
@@ -16,6 +16,35 @@ app.get("/", (_, res) => {
   // TODO: Add a proper index page
   res.send("Hello from Express and Bun!");
 });
+
+app.get(
+  "/api/shorten/:shortUrl",
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { shortUrl } = req.params;
+    console.log('shortUrl:', shortUrl);
+
+    if (!shortUrl) {
+      res.status(400);
+      const error = new Error("Missing short URL parameter.");
+      return next(error);
+    }
+
+    try {
+      const urlModel = await Url.findByShortUrl(shortUrl);
+
+      if (!urlModel) {
+        res.status(404);
+        const error = new Error("Invalid short URL.");
+        return next(error);
+      }
+
+      const { original, shortened } = urlModel;
+      res.json({ original, shortened });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 app.post(
   "/api/shorten",
@@ -34,14 +63,14 @@ app.post(
       return next(error);
     }
 
-    const urlModel = await User.findByUrl(url);
+    const urlModel = await Url.findByUrl(url);
     if (urlModel) {
       res.json({ url, shortUrl: urlModel.shortened });
     }
 
     try {
       const shortUrl = await nanoidAsync(10);
-      await User.create(url, shortUrl);
+      await Url.create(url, shortUrl);
       res.json({ url, shortUrl });
     } catch (error) {
       next(error);
