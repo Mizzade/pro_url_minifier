@@ -47,9 +47,20 @@ docker-compose down --volumes
 docker exec -it <CONTAINER_ID> psql -U <POSTGRES_USER> -d <POSTGRES_DB>
 ```
 
+### Run the backend server
+```bash
+ bunx prisma generate --schema=./backend/prisma/schema.prisma
+```
+
 ### Run ORM migration
 Make sure to run this command after changing the Prisma schema or before running the application for the first time.
 Run this from the root of the project:
 ```bash
 bunx prisma migrate dev --schema=./backend/prisma/schema.prisma
 ```
+
+## Getting started
+- 1. Start the database in docker
+- 2. Run migration: ```bunx prisma migrate dev --schema=./backend/prisma/schema.prisma```
+- 3. Run generation: ```bunx prisma generate --schema=./backend/prisma/schema.prisma```
+- 4. Start the backend server: ```bun run dev```

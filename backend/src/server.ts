@@ -1,6 +1,7 @@
 import express from "express";
-import { nanoid } from "nanoid";
 import type { NextFunction, Request, Response } from "express";
+import { nanoid } from "nanoid";
+import * as User from "./models/urls";
 
 const nanoidAsync = async (length: number): Promise<string> =>
   Promise.resolve(nanoid(length));
@@ -27,6 +28,7 @@ app.post(
 
     try {
       const shortUrl = await nanoidAsync(10);
+      await User.create(url, shortUrl);
       res.json({ shortUrl });
     } catch (error) {
       next(error);
