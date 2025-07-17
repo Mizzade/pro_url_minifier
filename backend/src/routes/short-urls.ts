@@ -19,24 +19,23 @@ export const createShortUrl = async (
     return next(error);
   }
 
-  // TODO: sanitize the URL
-  // For example, remove leading/trailing whitespace
+  const trimmedUrl = url.trim();
 
-  if (!validUrl.isUri(url)) {
+  if (!validUrl.isUri(trimmedUrl)) {
     res.status(400);
     const error = new Error("Invalid URL.");
     return next(error);
   }
 
-  const urlModel = await Url.findByUrl(url);
+  const urlModel = await Url.findByUrl(trimmedUrl);
   if (urlModel) {
-    res.json({ url, shortUrl: urlModel.shortened });
+    res.json({ url: trimmedUrl, shortUrl: urlModel.shortened });
   }
 
   try {
     const shortUrl = await nanoidAsync(10);
-    await Url.create(url, shortUrl);
-    res.json({ url, shortUrl });
+    await Url.create(trimmedUrl, shortUrl);
+    res.json({ url: trimmedUrl, shortUrl });
   } catch (error) {
     next(error);
   }
