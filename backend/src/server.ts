@@ -4,10 +4,6 @@ import { nanoid } from "nanoid";
 import { createShortUrl, getOriginalUrl } from "./routes/short-urls";
 import { errorHandler } from "./errors/error-handler";
 
-// TODO: Remove
-const nanoidAsync = async (length: number): Promise<string> =>
-  Promise.resolve(nanoid(length));
-
 const app = express();
 const PORT = process.env.PORT || 5000;
 
