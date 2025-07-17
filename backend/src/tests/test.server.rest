@@ -3,7 +3,7 @@ POST http://localhost:5000/api/shorten
 Content-Type: application/json
 
 {
-  "url": " https://www.google.com"
+  "url": "https://www.google.com"
 }
 
 ### Error: POST /api/shorten/
