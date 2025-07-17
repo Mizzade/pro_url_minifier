@@ -2,7 +2,9 @@ import express from "express";
 import type { NextFunction, Request, Response } from "express";
 import { nanoid } from "nanoid";
 import { createShortUrl, getOriginalUrl } from "./routes/short-urls";
+import { errorHandler } from "./errors/error-handler";
 
+// TODO: Remove
 const nanoidAsync = async (length: number): Promise<string> =>
   Promise.resolve(nanoid(length));
 
@@ -20,15 +22,6 @@ app.get("/api/shorten/:shortUrl", getOriginalUrl);
 
 app.post("/api/shorten", createShortUrl);
 
-// Global error handler
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  if (res.statusCode < 400) {
-    res.status(500);
-  }
-
-  const message = err.message || "Internal Server Error";
-
-  res.json({ error: { message } });
-});
+app.use(errorHandler);
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
