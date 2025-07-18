@@ -1,11 +1,11 @@
 {
-  "name": "proj_url_minifier",
+  "name": "proj-url-minifier-backend",
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun --hot ./backend/src/server.ts",
-    "prettier:check": "prettier --check ./backend/src",
-    "prettier:fix": "prettier --write ./backend/src"
+    "dev": "bun --hot ./src/server.ts",
+    "prettier:check": "prettier --check ./src",
+    "prettier:fix": "prettier --write ./src"
   },
   "devDependencies": {
     "@types/bun": "latest",
