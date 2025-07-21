@@ -85,3 +85,16 @@ Enter local docker database:
 ```bash
 pgcli -h localhost -p 5432 -U <POSTGRES_USER> -d <POSTGRES_DB>
 ```
+
+### Build the backend image
+
+```bash
+docker build -t url-minifier-backend ./backend
+```
+
+### Run the backend container
+
+```bash
+docker run -p 5000:5000 --env-file ./backend/.env url-minifier-backend
+```
+
