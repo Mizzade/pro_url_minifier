@@ -2,10 +2,10 @@ import type { Request, Response, NextFunction } from "express";
 import type ApiError from "./api-error";
 
 export function errorHandler(
-  err:  ApiError,
+  err: ApiError,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   const statusCode = err.statusCode ?? 500;
   const status = err.status ?? "error";
