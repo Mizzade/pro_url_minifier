@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import { nanoid } from "nanoid";
 import * as Url from "../models/urls";
 import validUrl from "valid-url";
+import ApiError from "../errors/api-error";
 
 const nanoidAsync = async (length: number): Promise<string> =>
   Promise.resolve(nanoid(length));
@@ -14,16 +15,14 @@ export const createShortUrl = async (
   const { url }: { url: string } = req.body || {};
 
   if (!url) {
-    res.status(400);
-    const error = new Error("Missing URL in request body.");
+    const error = new ApiError("Missing URL in request body.", 400);
     return next(error);
   }
 
   const trimmedUrl = url.trim();
 
   if (!validUrl.isUri(trimmedUrl)) {
-    res.status(400);
-    const error = new Error("Invalid URL.");
+    const error = new ApiError("Invalid URL.", 400);
     return next(error);
   }
 
@@ -49,8 +48,7 @@ export const getOriginalUrl = async (
   const { shortUrl } = req.params;
 
   if (!shortUrl) {
-    res.status(400);
-    const error = new Error("Missing short URL parameter.");
+    const error = new ApiError("Missing short URL parameter.", 400);
     return next(error);
   }
 
@@ -58,8 +56,7 @@ export const getOriginalUrl = async (
     const urlModel = await Url.findByShortUrl(shortUrl);
 
     if (!urlModel) {
-      res.status(404);
-      const error = new Error("Invalid short URL.");
+      const error = new ApiError("Invalid short URL.", 404);
       return next(error);
     }
 
