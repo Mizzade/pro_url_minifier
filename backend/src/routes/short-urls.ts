@@ -10,7 +10,7 @@ const nanoidAsync = async (length: number): Promise<string> =>
 export const createShortUrl = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   const { url }: { url: string } = req.body || {};
 
@@ -43,7 +43,7 @@ export const createShortUrl = async (
 export const getOriginalUrl = async (
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: NextFunction
 ) => {
   const { shortUrl } = req.params;
 

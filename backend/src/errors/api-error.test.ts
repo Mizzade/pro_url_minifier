@@ -1,4 +1,4 @@
-import ApiError from "../api-error";
+import ApiError from "./api-error";
 
 describe("ApiError", () => {
   it("should set message, statusCode, and status for 4xx codes", () => {
