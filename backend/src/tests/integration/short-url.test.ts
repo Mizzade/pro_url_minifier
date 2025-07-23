@@ -1,14 +1,15 @@
 import request from "supertest";
 import app from "../../server";
 import * as Url from "../../models/urls";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 
-jest.mock("nanoid", () => ({
-  nanoid: () => "mockedShortId"
+vi.mock("nanoid", () => ({
+  nanoid: () => "mockedShortId",
 }));
 
 describe("POST /short-urls", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("should create a short URL for a valid URL", async () => {
@@ -20,20 +21,18 @@ describe("POST /short-urls", () => {
       original: URL,
       shortened: SHORT_URL,
       createdAt: FIXED_DATE,
-      updatedAt: FIXED_DATE
-    }
+      updatedAt: FIXED_DATE,
+    };
 
-    jest.spyOn(Url, "findByUrl").mockResolvedValue(null);
-    jest.spyOn(Url, "create").mockResolvedValue(mockResponseCreate);
+    vi.spyOn(Url, "findByUrl").mockResolvedValue(null);
+    vi.spyOn(Url, "create").mockResolvedValue(mockResponseCreate);
 
-    const res = await request(app)
-      .post("/shorten")
-      .send({ url: URL });
+    const res = await request(app).post("/api/shorten").send({ url: URL });
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual({
       url: URL,
-      shortUrl: SHORT_URL
+      shortUrl: SHORT_URL,
     });
     expect(Url.create).toHaveBeenCalledWith(URL, SHORT_URL);
   });

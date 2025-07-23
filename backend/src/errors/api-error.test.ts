@@ -1,4 +1,5 @@
 import ApiError from "./api-error";
+import { describe, it, expect } from "vitest";
 
 describe("ApiError", () => {
   it("should set message, statusCode, and status for 4xx codes", () => {

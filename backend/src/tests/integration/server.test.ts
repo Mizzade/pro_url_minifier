@@ -1,5 +1,6 @@
 import request from "supertest";
 import app from "../../server";
+import { describe, it, expect } from "vitest";
 
 describe("GET /", () => {
   it("should return Hello from Express and Bun!", async () => {
