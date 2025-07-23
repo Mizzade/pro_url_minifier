@@ -26,12 +26,13 @@ export const createShortUrl = async (
     return next(error);
   }
 
-  const urlModel = await Url.findByUrl(trimmedUrl);
-  if (urlModel) {
-    return res.json({ url: trimmedUrl, shortUrl: urlModel.shortened });
-  }
-
   try {
+    const urlModel = await Url.findByUrl(trimmedUrl);
+    if (urlModel) {
+      res.json({ url: trimmedUrl, shortUrl: urlModel.shortened });
+      return; // necessary since Express expects a return of void or Promise<void>
+    }
+
     const shortUrl = await nanoidAsync(10);
     await Url.create(trimmedUrl, shortUrl);
     res.json({ url: trimmedUrl, shortUrl });
