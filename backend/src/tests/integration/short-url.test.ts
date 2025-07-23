@@ -23,6 +23,10 @@ describe("POST /short-urls", () => {
       createdAt: FIXED_DATE,
       updatedAt: FIXED_DATE,
     };
+    const expectedBody = {
+      url: URL,
+      shortUrl: SHORT_URL,
+    };
 
     vi.spyOn(Url, "findByUrl").mockResolvedValue(null);
     vi.spyOn(Url, "create").mockResolvedValue(mockResponseCreate);
@@ -30,10 +34,33 @@ describe("POST /short-urls", () => {
     const res = await request(app).post("/api/shorten").send({ url: URL });
 
     expect(res.statusCode).toBe(200);
-    expect(res.body).toEqual({
+    expect(res.body).toEqual(expectedBody);
+    expect(Url.create).toHaveBeenCalledWith(URL, SHORT_URL);
+  });
+
+  it("should return existing short URL if URL already exists", async () => {
+    const URL = "https://google.com";
+    const SHORT_URL = "mockedShortId";
+    const FIXED_DATE = new Date("2025-01-01T00:00:00.000Z");
+    const mockResponseFind = {
+      id: 1,
+      original: URL,
+      shortened: SHORT_URL,
+      createdAt: FIXED_DATE,
+      updatedAt: FIXED_DATE,
+    };
+    const expectedBody = {
       url: URL,
       shortUrl: SHORT_URL,
-    });
-    expect(Url.create).toHaveBeenCalledWith(URL, SHORT_URL);
+    };
+
+    vi.spyOn(Url, "findByUrl").mockResolvedValue(mockResponseFind);
+    vi.spyOn(Url, "create");
+
+    const res = await request(app).post("/api/shorten").send({ url: URL });
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual(expectedBody);
+    expect(Url.create).not.toHaveBeenCalled();
   });
 });

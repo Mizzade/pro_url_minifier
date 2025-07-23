@@ -28,7 +28,7 @@ export const createShortUrl = async (
 
   const urlModel = await Url.findByUrl(trimmedUrl);
   if (urlModel) {
-    res.json({ url: trimmedUrl, shortUrl: urlModel.shortened });
+    return res.json({ url: trimmedUrl, shortUrl: urlModel.shortened });
   }
 
   try {
