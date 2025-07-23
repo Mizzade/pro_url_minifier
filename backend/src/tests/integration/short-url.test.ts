@@ -12,6 +12,8 @@ describe("POST /short-urls", () => {
     vi.clearAllMocks();
   });
 
+  const ENDPOINT = "/api/shorten";
+
   it("should create a short URL for a valid URL", async () => {
     const URL = "https://google.com";
     const SHORT_URL = "mockedShortId";
@@ -31,7 +33,7 @@ describe("POST /short-urls", () => {
     vi.spyOn(Url, "findByUrl").mockResolvedValue(null);
     vi.spyOn(Url, "create").mockResolvedValue(mockResponseCreate);
 
-    const res = await request(app).post("/api/shorten").send({ url: URL });
+    const res = await request(app).post(ENDPOINT).send({ url: URL });
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual(expectedBody);
@@ -57,10 +59,36 @@ describe("POST /short-urls", () => {
     vi.spyOn(Url, "findByUrl").mockResolvedValue(mockResponseFind);
     vi.spyOn(Url, "create");
 
-    const res = await request(app).post("/api/shorten").send({ url: URL });
+    const res = await request(app).post(ENDPOINT).send({ url: URL });
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual(expectedBody);
     expect(Url.create).not.toHaveBeenCalled();
+  });
+
+  it("should return 400 if the URL parameter is missing", async () => {
+    const res = await request(app).post(ENDPOINT).send({});
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body).toHaveProperty("message", "Missing URL in request body.");
+  });
+
+  it("should return 400 if the URL parameter is invalid", async () => {
+    const res = await request(app).post(ENDPOINT).send({ url: "invalid-url" });
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body).toHaveProperty("message", "Invalid URL.");
+  });
+
+  it("should handle database/model errors gracefully", async () => {
+    const URL = "https://google.com";
+    vi.spyOn(Url, "findByUrl").mockImplementation(() => {
+      throw new Error("Database error");
+    });
+
+    const res = await request(app).post(ENDPOINT).send({ url: URL });
+
+    expect(res.statusCode).toBe(500);
+    expect(res.body).toHaveProperty("message", "Database error");
   });
 });
