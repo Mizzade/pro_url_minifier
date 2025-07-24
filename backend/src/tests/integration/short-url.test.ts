@@ -92,3 +92,58 @@ describe("POST /short-urls", () => {
     expect(res.body).toHaveProperty("message", "Database error");
   });
 });
+
+describe("GET /api/shorten/:shortUrl", async () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  const ENDPOINT = "/api/shorten";
+
+  it("should return the original URL for a valid short URL", async () => {
+    const SHORT_URL = "mockedShortId";
+    const URL = "https://google.com";
+    const FIXED_DATE = new Date("2025-01-01T00:00:00.000Z");
+    const mockResponse = {
+      id: 1,
+      original: URL,
+      shortened: SHORT_URL,
+      createdAt: FIXED_DATE,
+      updatedAt: FIXED_DATE,
+    };
+    const expectedBody = {
+      original: URL,
+      shortened: SHORT_URL,
+    };
+
+    vi.spyOn(Url, "findByShortUrl").mockResolvedValue(mockResponse);
+
+    const res = await request(app).get(`${ENDPOINT}/${SHORT_URL}`);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual(expectedBody);
+    expect(Url.findByShortUrl).toHaveBeenCalledWith(SHORT_URL);
+  });
+
+  it("should return 404 for an unknown short URL", async () => {
+    const SHORT_URL = "unknownShortId";
+    vi.spyOn(Url, "findByShortUrl").mockResolvedValue(null);
+
+    const res = await request(app).get(`${ENDPOINT}/${SHORT_URL}`);
+
+    expect(res.statusCode).toBe(404);
+    expect(res.body).toHaveProperty("message", "Invalid short URL.");
+  });
+
+  it("should handle database/model errors gracefully", async () => {
+    const SHORT_URL = "mockedShortId";
+    vi.spyOn(Url, "findByShortUrl").mockImplementation(() => {
+      throw new Error("Database error");
+    });
+
+    const res = await request(app).get(`${ENDPOINT}/${SHORT_URL}`);
+
+    expect(res.statusCode).toBe(500);
+    expect(res.body).toHaveProperty("message", "Database error");
+  });
+});
