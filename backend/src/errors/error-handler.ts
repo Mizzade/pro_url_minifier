@@ -4,7 +4,7 @@ import type ApiError from "./api-error";
 export function missingRouteHandler(
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void {
   res.status(404).json({ message: "Route not found." });
 }
@@ -13,7 +13,7 @@ export function errorHandler(
   err: ApiError,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) {
   const statusCode = err.statusCode ?? 500;
   const status = err.status ?? "error";

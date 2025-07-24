@@ -13,11 +13,11 @@ describe("POST /short-urls", () => {
   });
 
   const ENDPOINT = "/api/shorten";
+  const FIXED_DATE = new Date("2025-01-01T00:00:00.000Z");
 
   it("should create a short URL for a valid URL", async () => {
     const URL = "https://google.com";
     const SHORT_URL = "mockedShortId";
-    const FIXED_DATE = new Date("2025-01-01T00:00:00.000Z");
     const mockResponseCreate = {
       id: 1,
       original: URL,
@@ -43,7 +43,6 @@ describe("POST /short-urls", () => {
   it("should return existing short URL if URL already exists", async () => {
     const URL = "https://google.com";
     const SHORT_URL = "mockedShortId";
-    const FIXED_DATE = new Date("2025-01-01T00:00:00.000Z");
     const mockResponseFind = {
       id: 1,
       original: URL,
@@ -71,6 +70,7 @@ describe("POST /short-urls", () => {
 
     expect(res.statusCode).toBe(400);
     expect(res.body).toHaveProperty("message", "Missing URL in request body.");
+    expect(Url.create).not.toHaveBeenCalled();
   });
 
   it("should return 400 if the URL parameter is invalid", async () => {
@@ -78,6 +78,7 @@ describe("POST /short-urls", () => {
 
     expect(res.statusCode).toBe(400);
     expect(res.body).toHaveProperty("message", "Invalid URL.");
+    expect(Url.create).not.toHaveBeenCalled();
   });
 
   it("should handle database/model errors gracefully", async () => {
@@ -99,11 +100,11 @@ describe("GET /api/shorten/:shortUrl", async () => {
   });
 
   const ENDPOINT = "/api/shorten";
+  const FIXED_DATE = new Date("2025-01-01T00:00:00.000Z");
 
   it("should return the original URL for a valid short URL", async () => {
     const SHORT_URL = "mockedShortId";
     const URL = "https://google.com";
-    const FIXED_DATE = new Date("2025-01-01T00:00:00.000Z");
     const mockResponse = {
       id: 1,
       original: URL,
