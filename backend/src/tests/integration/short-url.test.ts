@@ -135,6 +135,13 @@ describe("GET /api/shorten/:shortUrl", async () => {
     expect(res.body).toHaveProperty("message", "Invalid short URL.");
   });
 
+  it("should return 404 if short URL parameter is missing", async () => {
+    const res = await request(app).get(`${ENDPOINT}`);
+
+    expect(res.statusCode).toBe(404);
+    expect(res.body).toHaveProperty("message", "Route not found.");
+  });
+
   it("should handle database/model errors gracefully", async () => {
     const SHORT_URL = "mockedShortId";
     vi.spyOn(Url, "findByShortUrl").mockImplementation(() => {
