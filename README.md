@@ -97,4 +97,9 @@ docker build -t url-minifier-backend ./backend
 ```bash
 docker run -p 5000:5000 --env-file ./backend/.env url-minifier-backend
 ```
+## Running tests
+Run the unit and integration tests with
+```bash
+bun run test
+```
 
