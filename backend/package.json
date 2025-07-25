@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "bun --hot ./src/server.ts",
+    "docker:dev": "docker-compose -p url_minifier_dev -f ../docker-compose.dev.yml up -d",
+    "db:dev:enter": "dotenv -e .env.development -- bash -c 'pgcli -h $DB_HOST -p $DB_PORT -U $POSTGRES_USER -d $POSTGRES_DB'",
     "test": "vitest",
     "test:Watch": "vitest --watch",
     "test:coverage": "vitest run --coverage",
@@ -16,6 +18,7 @@
     "@types/supertest": "^6.0.3",
     "@types/valid-url": "^1.0.7",
     "@vitest/coverage-v8": "3.2.4",
+    "dotenv-cli": "^9.0.0",
     "prettier": "^3.6.2",
     "prisma": "^6.12.0",
     "supertest": "^7.1.3",

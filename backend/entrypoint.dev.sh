@@ -7,4 +7,4 @@ echo "Running Prisma Migrations..."
 bunx prisma migrate dev --schema=./prisma/schema.prisma
 
 echo "Starting app..."
-exec bun run src/server.ts
+exec bun --hot ./src/server.ts

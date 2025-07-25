@@ -64,13 +64,13 @@ The database is run in a Docker container using `docker-compose`.
 From the project's root directory, run:
 
 ```bash
-docker-compose up -d db
+docker-compose -p url_minifier_dev -f docker-compose.dev.yml up -d db
 ```
 
 ### Remove the volume when shutting down the DB
 
 ```bash
-docker-compose down --volumes
+docker-compose -f docker-compose.dev.yml down --volumes
 ```
 
 ### Enter the DB on the running container
@@ -95,7 +95,7 @@ docker build -t url-minifier-backend ./backend
 ### Run the backend container
 
 ```bash
-docker run -p 5000:5000 --env-file ./backend/.env url-minifier-backend
+docker run -p 5000:5000 --env-file ./backend/.env.development url-minifier-backend
 ```
 ## Running tests
 Run the unit and integration tests with
@@ -103,3 +103,8 @@ Run the unit and integration tests with
 bun run test
 ```
 
+## Running the backend with the database in docker
+
+```bash
+docker-compose -p url_minifier_dev -f docker-compose.dev.yml up -d
+```
