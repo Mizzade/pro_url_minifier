@@ -2,9 +2,9 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     env_file:
-      - ./backend/.env
+      - ./backend/.env.development
     ports:
       - "5000:5000"
     depends_on:
@@ -15,9 +15,9 @@ services:
     ports:
       - "5432:5432"
     env_file:
-      - ./backend/.env
+      - ./backend/.env.development
     volumes:
-      - url_minifier_data:/var/lib/postgresql/data
+      - url_minifier_dev_data:/var/lib/postgresql/data
 
 volumes:
-  url_minifier_data:
+  url_minifier_dev_data:
