@@ -1,0 +1,46 @@
+# Stage 1: Builder
+FROM oven/bun:slim AS builder
+
+WORKDIR /app
+ENV NODE_ENV=production
+
+# Copy dependency manifests from parent folder and install with production flag
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile --production
+
+# Note, this will also copy the test files
+# TODO: Handle this later in the fnal stage.
+COPY ./src ./src
+COPY ./prisma ./prisma
+COPY ./entrypoint.prod.sh ./entrypoint.prod.sh
+
+RUN chmod +x ./entrypoint.prod.sh
+
+# Stage 2: Final (cleaner, runtime-only)
+FROM oven/bun:slim
+
+WORKDIR /app
+ENV NODE_ENV=production
+ENV PORT=5000
+
+# Install OpenSSL (required by Prisma)
+# --no-install-recommends is used to reduce the size of the image. It prevents
+# the installation of recommended but optional packages.
+# In addition, delete all cached package list files that were downloaded
+# during apt-get update
+RUN apt-get update -y \
+  && apt-get install -y --no-install-recommends openssl \
+  && rm -rf /var/lib/apt/lists/*
+
+# Copy only necessary files
+COPY --from=builder /app /app
+
+# Create non-root user
+# -r creates a system account (no home dir, non-login)
+# Then: Switch to the non-root user
+RUN groupadd -r appuser && useradd -r -g appuser appuser && chown -R appuser:appuser /app
+USER appuser
+
+EXPOSE 5000
+
+ENTRYPOINT ["./entrypoint.prod.sh"]

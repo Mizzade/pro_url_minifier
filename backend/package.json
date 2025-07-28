@@ -5,6 +5,9 @@
   "scripts": {
     "dev": "bun --hot ./src/server.ts",
     "docker:dev": "docker-compose -p url_minifier_dev -f ../docker-compose.dev.yml up -d",
+    "docker:dev:down": "docker-compose -p url_minifier_dev -f ../docker-compose.dev.yml down",
+    "docker:prod": "docker-compose -p url_minifier_prod -f ../docker-compose.prod.yml up -d",
+    "docker:prod:down": "docker-compose -p url_minifier_prod -f ../docker-compose.prod.yml down",
     "db:dev:enter": "dotenv -e .env.development -- bash -c 'pgcli -h $DB_HOST -p $DB_PORT -U $POSTGRES_USER -d $POSTGRES_DB'",
     "test": "vitest",
     "test:Watch": "vitest --watch",

@@ -1,0 +1,24 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.prod
+    command: tail -f /dev/null
+    env_file:
+      - ./backend/.env.production
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+  db:
+    image: postgres:17-alpine
+    restart: always
+    ports:
+      - "5432:5432"
+    env_file:
+      - ./backend/.env.production
+    volumes:
+      - url_minifier_prod_data:/var/lib/postgresql/data
+
+volumes:
+  url_minifier_prod_data:

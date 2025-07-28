@@ -17,11 +17,11 @@ COPY ./src ./src
 COPY ./prisma ./prisma
 
 # Copy and run the entrypoint script
-COPY ./entrypoint.dev.sh /entrypoint.dev.sh
-RUN chmod +x /entrypoint.dev.sh
+COPY ./entrypoint.dev.sh ./entrypoint.dev.sh
+RUN chmod +x ./entrypoint.dev.sh
 
 # Expose the port of your application
 EXPOSE 5000
 
 # Start with entrypoint (will run prisma migrate)
-ENTRYPOINT ["/entrypoint.dev.sh"]
+ENTRYPOINT ["./entrypoint.dev.sh"]
