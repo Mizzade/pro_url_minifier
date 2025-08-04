@@ -2,7 +2,6 @@
 
 set -e
 
-# TODO: Put the generate call into the Dockerfile
 echo "Generating Prisma Client..."
 PRISMA_CLI_BINARY_TARGETS="linux-arm64-openssl-3.0.x" bunx prisma generate
 

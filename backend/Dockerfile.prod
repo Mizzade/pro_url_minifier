@@ -8,20 +8,6 @@ ENV NODE_ENV=production
 COPY . .
 RUN bun install --frozen-lockfile --production
 
-# # Install OpenSSL (required by Prisma)
-# # --no-install-recommends is used to reduce the size of the image. It prevents
-# # the installation of recommended but optional packages.
-# # In addition, delete all cached package list files that were downloaded
-# # during apt-get update
-# # This is needed because prisma requires OpenSSL for certain operations.
-# RUN apt-get update -y \
-#   && apt-get install -y --no-install-recommends openssl \
-#   && rm -rf /var/lib/apt/lists/*
-
-# # Generate Prisma Client at build time
-# # The binary target depends on the base image architecture.
-# RUN PRISMA_CLI_BINARY_TARGETS="linux-arm64-openssl-3.0.x" bunx prisma generate
-
 # Create minimized production build
 RUN bun build src/server.ts --target=bun --outdir=dist --minify
 
