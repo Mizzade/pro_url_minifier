@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Ensures the script exits immediately if any command fails. Good practice in production scripts.
+# Ensures the script exits immediately if any command fails.
 set -e
 
 # The prisma migrate deploy command applies database migrations, which requires:
