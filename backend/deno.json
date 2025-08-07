@@ -1,0 +1,15 @@
+{
+  "imports": {
+    "express": "npm:express@^5.1.0",
+    "@prisma/client": "npm:@prisma/client@^6.12.0",
+    "nanoid": "npm:nanoid@^5.1.5",
+    "valid-url": "npm:valid-url@^1.0.9",
+
+    "prettier": "npm:prettier@^3.6.2"
+  },
+  "tasks": {
+    "dev": " deno --unstable-sloppy-imports --allow-env --allow-read --allow-ffi --allow-net ./src/server.ts",
+    "prettier:check": "prettier --check ./src",
+    "prettier:fix": "prettier --write ./src"
+  }
+}

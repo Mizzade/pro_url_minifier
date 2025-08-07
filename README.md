@@ -108,3 +108,22 @@ bun run test
 ```bash
 docker-compose -p url_minifier_dev -f docker-compose.dev.yml up -d
 ```
+
+# Deno (TODO: Update)
+
+- upgrade this readme file
+- remove package.json
+- upgrade dockerfiles
+- upgrade unit tests
+- upgrade integration tests
+- migrate scripts to tasks in deno.json
+
+#### Generate Prisma client
+```bash
+deno run -A npm:prisma@latest generate
+```
+
+### Run Server
+```bash
+ deno --unstable-sloppy-imports --allow-env --allow-read --allow-ffi --allow-net ./src/server.ts
+```

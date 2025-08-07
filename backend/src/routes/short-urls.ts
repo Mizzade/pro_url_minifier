@@ -1,8 +1,8 @@
 import type { NextFunction, Request, Response } from "express";
 import { nanoid } from "nanoid";
-import * as Url from "../models/urls";
 import validUrl from "valid-url";
-import ApiError from "../errors/api-error";
+import * as Url from "../models/urls.ts";
+import ApiError from "../errors/api-error.ts";
 
 const nanoidAsync = async (length: number): Promise<string> =>
   Promise.resolve(nanoid(length));
