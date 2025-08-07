@@ -1,4 +1,4 @@
-import prisma from "../db/prismaClient";
+import prisma from "../db/prismaClient.ts";
 
 export const create = async (original: string, shortened: string) =>
   prisma.url.create({

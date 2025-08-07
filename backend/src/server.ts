@@ -1,6 +1,6 @@
 import express from "express";
-import { createShortUrl, getOriginalUrl } from "./routes/short-urls";
-import { errorHandler, missingRouteHandler } from "./errors/error-handler";
+import { createShortUrl, getOriginalUrl } from "./routes/short-urls.ts";
+import { errorHandler, missingRouteHandler } from "./errors/error-handler.ts";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
