@@ -1,4 +1,4 @@
-FROM oven/bun:slim
+FROM denoland/deno:debian-2.4.3
 
 # Install OpenSSL (required by Prisma)
 RUN apt-get update -y && apt-get install -y openssl
@@ -7,14 +7,14 @@ RUN apt-get update -y && apt-get install -y openssl
 WORKDIR /app
 
 # Copy dependency manifests from parent folder
-COPY package.json bun.lock ./
-
-# Install dependencies
-RUN bun install
+COPY deno.json deno.lock ./
 
 # Copy backend source code into image
 COPY ./src ./src
 COPY ./prisma ./prisma
+
+# Install dependencies
+RUN deno install --allow-scripts
 
 # Copy and run the entrypoint script
 COPY ./entrypoint.dev.sh ./entrypoint.dev.sh
